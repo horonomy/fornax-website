@@ -1,0 +1,28 @@
+.verdict-pill {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85em;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.verdict-pill--verified {
+  color: var(--color-verified);
+}
+
+.verdict-pill--unverified {
+  color: var(--color-unverified);
+}
+
+.verdict-pill--contradicted {
+  color: var(--color-contradicted);
+}
+
+.verdict-pill--review {
+  color: var(--color-review);
+}
+
+.verdict-pill--unavailable {
+  color: var(--color-unavailable);
+}
