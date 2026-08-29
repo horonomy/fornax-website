@@ -1,0 +1,16 @@
+.oss-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.oss-grid ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--color-text-muted);
+}
+
+.oss-grid li {
+  margin-bottom: 0.35rem;
+}
