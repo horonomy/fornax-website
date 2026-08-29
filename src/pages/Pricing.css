@@ -1,0 +1,41 @@
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.pricing-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pricing-card--placeholder {
+  border-color: var(--color-review);
+}
+
+.pricing-card__price {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.pricing-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  flex: 1;
+}
+
+.pricing-card .btn {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+}
+
+.pricing-disclaimer {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  max-width: 68ch;
+}
