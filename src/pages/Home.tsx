@@ -81,17 +81,25 @@ export default function Home() {
         <div className="status-grid">
           <div className="card">
             <h3>Claude Code</h3>
-            <p>Adapter translates hook events into evidence. In active development.</p>
-            <span className="pill pill--placeholder">In progress</span>
+            <p>
+              Adapter translates hook events (<code>PreToolUse</code>,{' '}
+              <code>PostToolUse</code>, <code>Stop</code>,{' '}
+              <code>SessionStart</code>) into evidence in real time.
+            </p>
+            <span className="pill">Available</span>
           </div>
           <div className="card">
             <h3>Codex</h3>
             <p>
-              Adapter translates CLI rollout events into evidence. Capability
-              surface differs from Claude Code and is tracked explicitly, not
+              Adapter tails Codex&apos;s on-disk session transcript, not
+              hooks — Codex&apos;s hooks are opt-in and can be disabled by an
+              org admin, so Fornax doesn&apos;t depend on them. Capability
+              surface differs from Claude Code and is reported explicitly
+              (some checks resolve <VerdictPill state="UNAVAILABLE" /> on
+              Codex where the same check is checkable on Claude Code), never
               assumed symmetric.
             </p>
-            <span className="pill pill--placeholder">In progress</span>
+            <span className="pill">Available</span>
           </div>
         </div>
       </section>
