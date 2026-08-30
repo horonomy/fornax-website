@@ -8,10 +8,11 @@ export default function Pricing() {
       <span className="pill pill--placeholder">Provisional — not final</span>
       <h1>Pricing</h1>
       <p className="page__lede">
-        Fornax v0.0.1 is a local-first OSS runtime. Nothing below is a
-        committed price — the Team tier is a hypothesis we&apos;re testing,
-        not an offer, and requires owner commercial approval before it
-        becomes real. Talk to us if you want to shape it.
+        Fornax v0.0.1 is a local-first OSS runtime with an opt-in Beta cloud
+        tier. Nothing below is a committed price — the Beta tier&apos;s
+        price is a hypothesis we&apos;re testing, not an offer, and requires
+        owner commercial approval before it becomes real. Talk to us if you
+        want to shape it.
       </p>
 
       <div className="pricing-grid">
@@ -31,19 +32,20 @@ export default function Pricing() {
         </div>
 
         <div className="card pricing-card pricing-card--placeholder">
-          <span className="pill pill--placeholder">Hypothesis</span>
-          <h2>Team / Early Access</h2>
+          <span className="pill pill--placeholder">Beta — price is a hypothesis</span>
+          <h2>Beta / Early Access</h2>
           <p className="pricing-card__price">TBD</p>
           <p>
-            Shared dashboards, cloud sync of redacted findings, and
-            multi-seat review — for teams that want Fornax across a
-            repository, not just one machine. Price, seat model, and scope
-            are unset.
+            Opt-in cloud sync and a hosted findings dashboard are available
+            today as an unbilled Beta preview — not a committed product tier.
+            Price, seat model, and final scope are still unset; nothing here
+            is an offer until it gets owner commercial approval.
           </p>
           <ul>
             <li>Everything in Free</li>
-            <li>Opt-in cloud sync (redacted envelope only)</li>
-            <li>Team-visible findings dashboard</li>
+            <li>Opt-in cloud sync of redacted findings (Beta, unbilled today)</li>
+            <li>Hosted findings dashboard</li>
+            <li>Device connect flow: coming soon (FORNX-151)</li>
             <li>Shape it: early access conversations open now</li>
           </ul>
           <a

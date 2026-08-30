@@ -30,12 +30,22 @@ export default function Security() {
       <section className="page__section">
         <h2>What can leave your machine</h2>
         <p>
-          Cloud sync is opt-in and best-effort. When enabled, it sends a
-          redacted envelope containing only policy-approved metadata,
-          findings, fingerprints, and version/provenance summaries — never
-          the raw content listed above. The upload policy is deterministic
-          and versioned, and you can inspect what an upload would contain
-          before turning cloud sync on.
+          Cloud sync is opt-in — off by default, and local integrity
+          checking works the same with it off. <strong>Beta</strong> is the
+          hosted sync target: an early, opt-in preview, not the default way
+          to run Fornax and not a general-availability product. When
+          enabled, it sends a redacted envelope containing only
+          policy-approved metadata, findings, fingerprints, and
+          version/provenance summaries — never the raw content listed
+          above. Every field is scanned and redacted at the point it is
+          first captured, before it reaches local storage, and that
+          redaction step is covered by an automated regression test.
+        </p>
+        <p>
+          Connecting a machine to Beta requires device registration and
+          authenticated ingest — that flow is still being built (tracked as
+          FORNX-151) and is marked <strong>Beta — coming soon</strong> in the
+          docs until it ships; it is not live today.
         </p>
       </section>
 
@@ -44,9 +54,15 @@ export default function Security() {
         <p>
           Secret and credential filtering is a defensive layer, not
           marketed as perfect data-loss prevention — treat it as one control
-          among several, not a guarantee. Fornax is at MVP maturity
-          (v0.0.1); this page will be updated as the privacy boundary is
-          extended and independently reviewed.
+          among several, not a guarantee. It has been exercised with a
+          dedicated adversarial-input and secret-egress test pass at the
+          point evidence is captured and stored locally; the further path
+          once an upload leaves that boundary (upload transport through to
+          the hosted dashboard) has not had the same level of independent,
+          end-to-end re-verification. Fornax is at MVP maturity (v0.0.1)
+          with an opt-in Beta cloud tier, not a GA product; this page will
+          be updated as the privacy boundary is extended and independently
+          reviewed.
         </p>
       </section>
     </div>
