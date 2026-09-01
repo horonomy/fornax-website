@@ -16,10 +16,10 @@ export default function HowItWorks() {
           <span className="flow__index">1</span>
           <h2>Observe</h2>
           <p>
-            A thin adapter (one per provider — Claude Code, Codex) translates
-            provider-native events into a canonical, immutable event log:
-            tool calls, exit codes, files touched, transcript text. Nothing
-            is interpreted yet.
+            A thin adapter (one per provider — Claude Code, Codex, and,
+            experimentally, opencode) translates provider-native events into
+            a canonical, immutable event log: tool calls, exit codes, files
+            touched, transcript text. Nothing is interpreted yet.
           </p>
         </li>
         <li className="flow__step card">

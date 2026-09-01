@@ -21,7 +21,7 @@ export default function OpenSource() {
           <h2>Public (MIT)</h2>
           <ul>
             <li>Local Rust runtime and daemon</li>
-            <li>Claude Code and Codex adapters</li>
+            <li>Claude Code and Codex adapters, plus an experimental opencode adapter</li>
             <li>Canonical event/evidence protocol</li>
             <li>Claim / evidence / finding data models</li>
             <li>Deterministic verifiers</li>

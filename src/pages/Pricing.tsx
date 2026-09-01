@@ -22,7 +22,7 @@ export default function Pricing() {
           <p>The local runtime, forever, for anyone running it themselves.</p>
           <ul>
             <li>Full local daemon: adapters, verifiers, storage</li>
-            <li>Claude Code &amp; Codex adapters</li>
+            <li>Claude Code &amp; Codex adapters, plus an experimental opencode adapter</li>
             <li>CLI, status line, local dashboard</li>
             <li>No cloud account required</li>
           </ul>
