@@ -101,6 +101,19 @@ export default function Home() {
             </p>
             <span className="pill">Available</span>
           </div>
+          <div className="card">
+            <h3>opencode</h3>
+            <p>
+              An open-source, in-process plugin adapter running against a
+              local Ollama backend — built as an architecture-fitness proof
+              that a third, structurally different provider integrates
+              without core rewrites. Its exit-code signal is a literal value
+              (no heuristic), a first among Fornax&apos;s adapters. Not a
+              plugin marketplace or general extension system — one concrete
+              integration, with its own disclosed capability gaps.
+            </p>
+            <span className="pill pill--placeholder">Experimental</span>
+          </div>
         </div>
       </section>
     </>
