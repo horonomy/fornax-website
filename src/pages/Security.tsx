@@ -50,6 +50,22 @@ export default function Security() {
       </section>
 
       <section className="page__section">
+        <h2>Analytics on this website</h2>
+        <p>
+          This marketing site (fornax.horo.run) uses Google Analytics 4 to
+          count page views and a small set of named button/link clicks —
+          docs, GitHub, sign-in, pricing view, early access, install and
+          contact-sales CTAs. That is separate from, and never joined with,
+          the local runtime or the Beta cloud tier described above: it never
+          receives prompts, agent execution content, findings/evidence,
+          repository names, organization or tenant identifiers, emails,
+          credentials, or any authenticated product data. It only runs on
+          this public website, not in the local runtime, the CLI, the local
+          dashboard, or the authenticated app.
+        </p>
+      </section>
+
+      <section className="page__section">
         <h2>Honest limits</h2>
         <p>
           Secret and credential filtering is a defensive layer, not
