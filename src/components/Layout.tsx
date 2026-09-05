@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { DOCS_URL, GITHUB_URL, APP_URL, APP_LIVE, DOCS_LIVE } from '../config'
-import { initAnalytics, trackPageView, trackEvent } from '../analytics'
+import { initAnalytics, trackPageView, trackEvent, type FunnelEvent } from '../analytics'
 import './Layout.css'
 
-const NAV_LINKS = [
+const NAV_LINKS: { to: string; label: string; end?: boolean; event?: FunnelEvent }[] = [
   { to: '/', label: 'Home', end: true },
   { to: '/how-it-works', label: 'How it works' },
   { to: '/pricing', label: 'Pricing' },
-  { to: '/open-source', label: 'Open Source' },
-  { to: '/security', label: 'Security & Privacy' },
+  { to: '/open-source', label: 'Open Source', event: 'open_source_click' },
+  { to: '/security', label: 'Security & Privacy', event: 'security_details_click' },
 ]
 
 export default function Layout() {
@@ -40,6 +40,7 @@ export default function Layout() {
                 className={({ isActive }) =>
                   isActive ? 'site-header__link is-active' : 'site-header__link'
                 }
+                onClick={link.event ? () => trackEvent(link.event!) : undefined}
               >
                 {link.label}
               </NavLink>
@@ -91,7 +92,9 @@ export default function Layout() {
             <a href={DOCS_URL} onClick={() => trackEvent('docs_click')}>
               Docs
             </a>
-            <NavLink to="/security">Security &amp; Privacy</NavLink>
+            <NavLink to="/security" onClick={() => trackEvent('security_details_click')}>
+              Security &amp; Privacy
+            </NavLink>
           </div>
         </div>
       </footer>
