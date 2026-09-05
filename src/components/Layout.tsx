@@ -1,5 +1,7 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { DOCS_URL, GITHUB_URL, APP_URL, APP_LIVE, DOCS_LIVE } from '../config'
+import { initAnalytics, trackPageView, trackEvent } from '../analytics'
 import './Layout.css'
 
 const NAV_LINKS = [
@@ -11,6 +13,16 @@ const NAV_LINKS = [
 ]
 
 export default function Layout() {
+  const location = useLocation()
+
+  useEffect(() => {
+    initAnalytics()
+  }, [])
+
+  useEffect(() => {
+    trackPageView(location.pathname)
+  }, [location.pathname])
+
   return (
     <>
       <header className="site-header">
@@ -38,6 +50,7 @@ export default function Layout() {
               className="btn btn--secondary"
               href={DOCS_URL}
               aria-disabled={!DOCS_LIVE}
+              onClick={() => trackEvent('docs_click')}
             >
               Docs
             </a>
@@ -45,6 +58,7 @@ export default function Layout() {
               className="btn btn--primary"
               href={APP_URL}
               aria-disabled={!APP_LIVE}
+              onClick={() => trackEvent('app_click')}
             >
               Sign in
             </a>
@@ -66,10 +80,17 @@ export default function Layout() {
             . Core runtime is MIT-licensed and open source.
           </p>
           <div className="site-footer__links">
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackEvent('github_click')}
+            >
               GitHub
             </a>
-            <a href={DOCS_URL}>Docs</a>
+            <a href={DOCS_URL} onClick={() => trackEvent('docs_click')}>
+              Docs
+            </a>
             <NavLink to="/security">Security &amp; Privacy</NavLink>
           </div>
         </div>
