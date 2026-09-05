@@ -31,6 +31,8 @@ export type FunnelEvent =
   | 'early_access_click'
   | 'install_cta_click'
   | 'contact_sales_click'
+  | 'security_details_click'
+  | 'open_source_click'
 
 let initialized = false
 
