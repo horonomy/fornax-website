@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { DOCS_URL, GITHUB_URL, DOCS_LIVE } from '../config'
 import VerdictPill from '../components/VerdictPill'
+import { trackEvent } from '../analytics'
 import './Home.css'
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
             className="btn btn--primary"
             href={DOCS_LIVE ? DOCS_URL : GITHUB_URL}
             aria-disabled={!DOCS_LIVE}
+            onClick={() => trackEvent('install_cta_click')}
           >
             {DOCS_LIVE ? 'Read the docs' : 'Get started on GitHub'}
           </a>
