@@ -11,7 +11,9 @@ where they conflict.
   site (that's `fornax-docs`) — this is the landing surface that explains
   the product, presents (placeholder) pricing, calls out the OSS boundary,
   and links out to docs, GitHub, and the SaaS app.
-- Deploys to `fornax.horo.run`.
+- Deploys to `fornax.horonom.com` (moved from `fornax.horo.run` per
+  FORNX-328; `fornax.horo.run` still aliases to the same deployment but is
+  no longer canonical — runtime/API surfaces stay on `horo.run` by design).
 - Language/stack: Vite + React + TypeScript (latest stable at time of
   setup — see `package.json`/`package-lock.json` for exact pinned
   versions), `react-router-dom` for client-side routing, plain CSS with a

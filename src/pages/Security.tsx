@@ -52,7 +52,7 @@ export default function Security() {
       <section className="page__section">
         <h2>Analytics on this website</h2>
         <p>
-          This marketing site (fornax.horo.run) uses Google Analytics 4 to
+          This marketing site (fornax.horonom.com) uses Google Analytics 4 to
           count page views and a small set of named button/link clicks —
           docs, GitHub, sign-in, pricing view, early access, install and
           contact-sales CTAs. That is separate from, and never joined with,
