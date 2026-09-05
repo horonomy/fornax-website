@@ -1,8 +1,14 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { GITHUB_URL } from '../config'
+import { trackEvent } from '../analytics'
 import './Pricing.css'
 
 export default function Pricing() {
+  useEffect(() => {
+    trackEvent('pricing_view')
+  }, [])
+
   return (
     <div className="container page">
       <span className="pill pill--placeholder">Provisional — not final</span>
@@ -26,7 +32,11 @@ export default function Pricing() {
             <li>CLI, status line, local dashboard</li>
             <li>No cloud account required</li>
           </ul>
-          <a className="btn btn--secondary" href={GITHUB_URL}>
+          <a
+            className="btn btn--secondary"
+            href={GITHUB_URL}
+            onClick={() => trackEvent('github_click')}
+          >
             Get it on GitHub
           </a>
         </div>
@@ -51,6 +61,7 @@ export default function Pricing() {
           <a
             className="btn btn--secondary"
             href="mailto:hello@horo.run?subject=Fornax%20Early%20Access"
+            onClick={() => trackEvent('early_access_click')}
           >
             Request early access
           </a>
@@ -66,6 +77,7 @@ export default function Pricing() {
           <a
             className="btn btn--secondary"
             href="mailto:hello@horo.run?subject=Fornax%20Enterprise"
+            onClick={() => trackEvent('contact_sales_click')}
           >
             Contact sales
           </a>

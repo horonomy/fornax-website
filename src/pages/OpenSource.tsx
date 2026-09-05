@@ -1,4 +1,5 @@
 import { GITHUB_URL } from '../config'
+import { trackEvent } from '../analytics'
 import './OpenSource.css'
 
 export default function OpenSource() {
@@ -52,7 +53,11 @@ export default function OpenSource() {
         </p>
       </section>
 
-      <a className="btn btn--primary" href={GITHUB_URL}>
+      <a
+        className="btn btn--primary"
+        href={GITHUB_URL}
+        onClick={() => trackEvent('github_click')}
+      >
         View the repository
       </a>
     </div>
