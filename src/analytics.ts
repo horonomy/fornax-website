@@ -1,10 +1,19 @@
 /**
- * Minimal GA4 wrapper for the public marketing site (FORNX-327).
+ * Minimal GA4 wrapper for the public marketing site (FORNX-327/FORNX-329).
  *
  * Public marketing analytics only — never wired to authenticated SaaS/
  * product telemetry, and not to be joined with it without a separate,
  * privacy-reviewed decision. No-ops entirely when VITE_GA_MEASUREMENT_ID is
  * unset, so local dev and PR preview builds behave exactly as before.
+ *
+ * The gtag.js script + init snippet itself is injected as static,
+ * parser-inserted <script> tags at build time (see vite.config.ts), not
+ * dynamically via document.createElement -- a real-browser investigation
+ * (FORNX-329) found gtag.js never completed tag registration when the
+ * script was inserted dynamically, while the identical Measurement ID
+ * worked immediately via docs.fornax.horonom.com's static-HTML-injected
+ * script (the official @docusaurus/plugin-google-gtag pattern). This
+ * module only ever calls the `gtag` that snippet already defines.
  *
  * Only the fixed FunnelEvent names below may ever be sent, with no extra
  * event payload. GA4 auto-collects page_location/user_agent/etc, which is
@@ -20,7 +29,7 @@ declare global {
   }
 }
 
-const MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
+const HAS_MEASUREMENT_ID = Boolean(import.meta.env.VITE_GA_MEASUREMENT_ID)
 
 /** The complete marketing funnel event vocabulary. Do not extend ad hoc. */
 export type FunnelEvent =
@@ -34,40 +43,15 @@ export type FunnelEvent =
   | 'security_details_click'
   | 'open_source_click'
 
-let initialized = false
-
-/** Injects gtag.js and initializes GA4. No-op if the Measurement ID is unset or this already ran. */
-export function initAnalytics(): void {
-  if (initialized || !MEASUREMENT_ID) return
-  initialized = true
-
-  window.dataLayer = window.dataLayer ?? []
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer!.push(args)
-  }
-  window.gtag('js', new Date())
-  // send_page_view: false — this is a client-routed SPA, so page views are
-  // reported explicitly via trackPageView on every route change instead of
-  // relying on gtag's config-time automatic pageview.
-  window.gtag('config', MEASUREMENT_ID, { send_page_view: false })
-
-  const script = document.createElement('script')
-  script.async = true
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`
-  document.head.appendChild(script)
-}
-
-/** Records a client-side route change as a GA4 page_view. No-op without a Measurement ID. */
+/** Records a client-side SPA route change as a GA4 page_view. No-op without a Measurement ID. Do not call this for the initial page load -- gtag's own automatic page_view already covers it. */
 export function trackPageView(path: string): void {
-  if (!MEASUREMENT_ID || !window.gtag) return
-  window.gtag('event', 'page_view', {
-    page_location: window.location.origin + path,
-    page_path: path,
-  })
+  if (!HAS_MEASUREMENT_ID || !window.gtag) return
+  window.gtag('set', 'page_path', path)
+  window.gtag('event', 'page_view')
 }
 
 /** Records one of the fixed marketing funnel events. No-op without a Measurement ID. */
 export function trackEvent(name: FunnelEvent): void {
-  if (!MEASUREMENT_ID || !window.gtag) return
+  if (!HAS_MEASUREMENT_ID || !window.gtag) return
   window.gtag('event', name)
 }

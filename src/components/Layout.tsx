@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { DOCS_URL, GITHUB_URL, APP_URL, APP_LIVE, DOCS_LIVE } from '../config'
-import { initAnalytics, trackPageView, trackEvent, type FunnelEvent } from '../analytics'
+import { trackPageView, trackEvent, type FunnelEvent } from '../analytics'
 import './Layout.css'
 
 const NAV_LINKS: { to: string; label: string; end?: boolean; event?: FunnelEvent }[] = [
@@ -14,12 +14,16 @@ const NAV_LINKS: { to: string; label: string; end?: boolean; event?: FunnelEvent
 
 export default function Layout() {
   const location = useLocation()
+  const isFirstRender = useRef(true)
 
+  // gtag's own automatic page_view already covers the initial load; only
+  // report subsequent SPA route changes here, mirroring the official
+  // @docusaurus/plugin-google-gtag pattern (see analytics.ts).
   useEffect(() => {
-    initAnalytics()
-  }, [])
-
-  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
     trackPageView(location.pathname)
   }, [location.pathname])
 
