@@ -28,9 +28,10 @@ where they conflict.
 - Pricing figures on `/pricing` are clearly labeled provisional
   placeholders, not committed prices — real commercial pricing requires
   owner approval.
-- The docs (`/docs` link) and SaaS app (sign-in) links point at surfaces
-  built in parallel and not live yet; `src/config.ts` is the single place
-  those URLs are configured.
+- The docs link points at `fornax-docs`, live since FORNX-329/FORNX-330.
+  The SaaS app (sign-in) link points at a surface with no public sign-in
+  yet (FORNX-42). `src/config.ts` is the single place those URLs and their
+  `DOCS_LIVE`/`APP_LIVE` gates are configured.
 
 ## Commands
 
