@@ -1,0 +1,13 @@
+name = "fornax-edge"
+main = "src/index.ts"
+compatibility_date = "2026-09-06"
+
+# Zone-level Workers Route takes precedence over the Pages custom-domain
+# binding already on this hostname (see src/index.ts for why a Worker route
+# was chosen over a Redirect Rule/Bulk Redirect/Page Rule). The Pages custom
+# domain is deliberately left attached rather than detached: the route
+# intercepts matching requests before Pages resolution runs, so there is no
+# need to touch — and no risk to — the existing TLS binding on this hostname.
+[[routes]]
+pattern = "fornax.horo.run/*"
+zone_name = "horo.run"
