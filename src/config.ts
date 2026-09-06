@@ -20,6 +20,13 @@ export const DOCS_URL = 'https://docs.fornax.horonom.com'
 export const GITHUB_URL = 'https://github.com/horonomy/fornax-core'
 export const APP_URL = 'https://app.fornax.horo.run'
 
-/** Whether the linked surfaces above are actually live yet. */
-export const DOCS_LIVE = false
+/**
+ * Whether the linked surfaces above are actually live yet.
+ *
+ * DOCS_LIVE flipped true (FORNX-336): docs.fornax.horonom.com has been
+ * live and real-browser-verified since FORNX-329/FORNX-330 (both Done).
+ * APP_LIVE stays false: app.fornax.horo.run genuinely has no public
+ * sign-in yet (FORNX-42) — a real product gate, not doc staleness.
+ */
+export const DOCS_LIVE = true
 export const APP_LIVE = false
