@@ -51,6 +51,48 @@ test('dismisses the disclosure when a marketing route is chosen', async ({ page 
   await expect(page.locator('#primary-navigation-menu')).toBeHidden()
 })
 
+test('keeps a rapidly reopened disclosure visible', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+
+  const menuButton = page.getByRole('button', { name: 'Menu' })
+  await menuButton.click()
+  await menuButton.click()
+  await menuButton.click()
+
+  await page.waitForTimeout(180)
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true')
+  await expect(page.locator('#primary-navigation-menu')).toBeVisible()
+})
+
+test('dismisses the disclosure on browser history navigation', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Menu' }).click()
+  await page.locator('#primary-navigation-menu').getByRole('link', { name: 'Pricing' }).click()
+  await page.getByRole('button', { name: 'Menu' }).click()
+
+  await page.goBack()
+
+  await expect(page).toHaveURL(/\/$/)
+  await expect(page.getByRole('button', { name: 'Menu' })).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.locator('#primary-navigation-menu')).toBeHidden()
+})
+
+test('closes the mobile disclosure and moves focus to the brand at the desktop breakpoint', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Menu' }).click()
+  await page.locator('#primary-navigation-menu').getByRole('link', { name: 'Pricing' }).focus()
+
+  await page.setViewportSize({ width: 768, height: 844 })
+
+  await expect(page.locator('#primary-navigation-menu')).toBeHidden()
+  await expect(page.getByRole('link', { name: 'Fornax' })).toBeFocused()
+})
+
 test('uses an immediate disclosure state when reduced motion is requested', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 390, height: 844 })
@@ -75,7 +117,7 @@ for (const width of [320, 390, 430]) {
   })
 }
 
-test('has no horizontal overflow at an effective 200% zoom when supported', async ({ page }) => {
+test('has no horizontal overflow in a CSS zoom diagnostic when supported', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
 

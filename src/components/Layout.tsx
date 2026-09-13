@@ -15,9 +15,11 @@ const NAV_LINKS: { to: string; label: string; end?: boolean; event?: FunnelEvent
 export default function Layout() {
   const location = useLocation()
   const isFirstRender = useRef(true)
+  const brandRef = useRef<HTMLAnchorElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const openFrameRef = useRef<number | null>(null)
+  const isMenuRenderedRef = useRef(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMenuRendered, setIsMenuRendered] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
@@ -27,6 +29,7 @@ export default function Layout() {
       clearTimeout(closeTimerRef.current)
       closeTimerRef.current = null
     }
+    isMenuRenderedRef.current = true
     setIsMenuRendered(true)
     setIsMenuOpen(true)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -39,9 +42,13 @@ export default function Layout() {
     }
   }
 
-  const closeMenu = useCallback((returnFocus = false) => {
-    if (!isMenuRendered) {
+  const closeMenu = useCallback((focusTarget?: 'menu' | 'brand') => {
+    if (!isMenuRenderedRef.current) {
       return
+    }
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
     }
     if (openFrameRef.current) {
       cancelAnimationFrame(openFrameRef.current)
@@ -51,14 +58,18 @@ export default function Layout() {
     setIsMenuVisible(false)
     const closeDuration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 120
     closeTimerRef.current = setTimeout(() => {
+      isMenuRenderedRef.current = false
       setIsMenuRendered(false)
       closeTimerRef.current = null
     }, closeDuration)
 
-    if (returnFocus) {
+    if (focusTarget === 'menu') {
       menuButtonRef.current?.focus()
     }
-  }, [isMenuRendered])
+    if (focusTarget === 'brand') {
+      brandRef.current?.focus()
+    }
+  }, [])
 
   // gtag's own automatic page_view already covers the initial load; only
   // report subsequent SPA route changes here, mirroring the official
@@ -78,13 +89,36 @@ export default function Layout() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        closeMenu(true)
+        closeMenu('menu')
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isMenuOpen, closeMenu])
+
+  useEffect(() => {
+    closeMenu()
+  }, [location.pathname, closeMenu])
+
+  useEffect(() => {
+    const desktopBreakpoint = window.matchMedia('(min-width: 768px)')
+    const closeForDesktop = () => {
+      if (!desktopBreakpoint.matches) {
+        return
+      }
+
+      const focusedElement = document.activeElement
+      const focusedMenuItem =
+        focusedElement instanceof HTMLElement &&
+        focusedElement.closest('#primary-navigation-menu') !== null
+      closeMenu(focusedMenuItem ? 'brand' : undefined)
+    }
+
+    closeForDesktop()
+    desktopBreakpoint.addEventListener('change', closeForDesktop)
+    return () => desktopBreakpoint.removeEventListener('change', closeForDesktop)
+  }, [closeMenu])
 
   useEffect(
     () => () => {
@@ -94,6 +128,7 @@ export default function Layout() {
       if (openFrameRef.current) {
         cancelAnimationFrame(openFrameRef.current)
       }
+      isMenuRenderedRef.current = false
     },
     [],
   )
@@ -102,7 +137,7 @@ export default function Layout() {
     <>
       <header className="site-header">
         <div className="container site-header__inner">
-          <NavLink to="/" className="site-header__brand" end onClick={() => closeMenu()}>
+          <NavLink ref={brandRef} to="/" className="site-header__brand" end onClick={() => closeMenu()}>
             <span className="site-header__mark" aria-hidden="true" />
             Fornax
           </NavLink>
