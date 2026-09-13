@@ -20,6 +20,7 @@ export default function Layout() {
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const openFrameRef = useRef<number | null>(null)
   const isMenuRenderedRef = useRef(false)
+  const isMenuOpenRef = useRef(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMenuRendered, setIsMenuRendered] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
@@ -30,6 +31,7 @@ export default function Layout() {
       closeTimerRef.current = null
     }
     isMenuRenderedRef.current = true
+    isMenuOpenRef.current = true
     setIsMenuRendered(true)
     setIsMenuOpen(true)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -55,6 +57,7 @@ export default function Layout() {
       openFrameRef.current = null
     }
     setIsMenuOpen(false)
+    isMenuOpenRef.current = false
     setIsMenuVisible(false)
     const closeDuration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 120
     closeTimerRef.current = setTimeout(() => {
@@ -108,11 +111,9 @@ export default function Layout() {
         return
       }
 
-      const focusedElement = document.activeElement
-      const focusedMenuItem =
-        focusedElement instanceof HTMLElement &&
-        focusedElement.closest('#primary-navigation-menu') !== null
-      closeMenu(focusedMenuItem ? 'brand' : undefined)
+      if (isMenuOpenRef.current) {
+        closeMenu('brand')
+      }
     }
 
     closeForDesktop()
@@ -129,6 +130,7 @@ export default function Layout() {
         cancelAnimationFrame(openFrameRef.current)
       }
       isMenuRenderedRef.current = false
+      isMenuOpenRef.current = false
     },
     [],
   )
@@ -188,6 +190,13 @@ export default function Layout() {
               </button>
             )}
           </div>
+          <a
+            className="site-header__compact-docs"
+            href={DOCS_URL}
+            onClick={() => trackEvent('docs_click')}
+          >
+            Docs
+          </a>
           <button
             ref={menuButtonRef}
             type="button"
@@ -227,16 +236,6 @@ export default function Layout() {
                   {link.label}
                 </NavLink>
               ))}
-              <a
-                className="site-header__menu-link"
-                href={DOCS_URL}
-                onClick={() => {
-                  trackEvent('docs_click')
-                  closeMenu()
-                }}
-              >
-                Docs
-              </a>
               {APP_LIVE ? (
                 <a
                   className="site-header__menu-link"

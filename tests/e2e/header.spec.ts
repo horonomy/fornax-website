@@ -21,6 +21,8 @@ test('discloses every marketing route and restores trigger focus on Escape', asy
   await page.goto('/')
 
   const menuButton = page.getByRole('button', { name: 'Menu' })
+  const docsLink = page.locator('.site-header__compact-docs')
+  await expect(docsLink).toBeVisible()
   await menuButton.click()
   await expect(menuButton).toHaveAttribute('aria-expanded', 'true')
 
@@ -32,6 +34,7 @@ test('discloses every marketing route and restores trigger focus on Escape', asy
       route.href,
     )
   }
+  await expect(disclosure.getByRole('link', { name: 'Docs' })).toHaveCount(0)
 
   await page.keyboard.press('Escape')
   await expect(menuButton).toHaveAttribute('aria-expanded', 'false')
