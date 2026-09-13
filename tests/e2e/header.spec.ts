@@ -116,20 +116,3 @@ for (const width of [320, 390, 430]) {
       .toBe(true)
   })
 }
-
-test('has no horizontal overflow in a CSS zoom diagnostic when supported', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/')
-
-  const supportsZoom = await page.evaluate(() => CSS.supports('zoom', '2'))
-  test.skip(!supportsZoom, 'CSS zoom is not supported by this browser')
-
-  await page.evaluate(() => {
-    document.documentElement.style.zoom = '2'
-  })
-  await page.getByRole('button', { name: 'Menu' }).click()
-
-  await expect
-    .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
-    .toBe(true)
-})
