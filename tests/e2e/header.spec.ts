@@ -119,3 +119,23 @@ for (const width of [320, 390, 430]) {
       .toBe(true)
   })
 }
+
+test('keeps the final disclosure row reachable in a short viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 568, height: 320 })
+  await page.goto('/')
+
+  await page.getByRole('button', { name: 'Menu' }).click()
+  for (let tabCount = 0; tabCount < 5; tabCount += 1) {
+    await page.keyboard.press('Tab')
+  }
+
+  const disclosure = page.locator('#primary-navigation-menu')
+  const finalRoute = disclosure.getByRole('link', { name: 'Security & Privacy' })
+  await expect(finalRoute).toBeFocused()
+  const finalItem = disclosure.getByRole('button', { name: 'Sign in' })
+  await finalItem.scrollIntoViewIfNeeded()
+  await expect(finalItem).toBeVisible()
+  await expect
+    .poll(() => disclosure.evaluate(element => element.scrollHeight > element.clientHeight && element.scrollTop > 0))
+    .toBe(true)
+})
