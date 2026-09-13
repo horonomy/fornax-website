@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { DOCS_URL, GITHUB_URL, APP_URL, APP_LIVE } from '../config'
 import { trackPageView, trackEvent, type FunnelEvent } from '../analytics'
@@ -15,6 +15,50 @@ const NAV_LINKS: { to: string; label: string; end?: boolean; event?: FunnelEvent
 export default function Layout() {
   const location = useLocation()
   const isFirstRender = useRef(true)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const openFrameRef = useRef<number | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuRendered, setIsMenuRendered] = useState(false)
+  const [isMenuVisible, setIsMenuVisible] = useState(false)
+
+  const openMenu = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+    }
+    setIsMenuRendered(true)
+    setIsMenuOpen(true)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIsMenuVisible(true)
+    } else {
+      openFrameRef.current = requestAnimationFrame(() => {
+        setIsMenuVisible(true)
+        openFrameRef.current = null
+      })
+    }
+  }
+
+  const closeMenu = useCallback((returnFocus = false) => {
+    if (!isMenuRendered) {
+      return
+    }
+    if (openFrameRef.current) {
+      cancelAnimationFrame(openFrameRef.current)
+      openFrameRef.current = null
+    }
+    setIsMenuOpen(false)
+    setIsMenuVisible(false)
+    const closeDuration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 120
+    closeTimerRef.current = setTimeout(() => {
+      setIsMenuRendered(false)
+      closeTimerRef.current = null
+    }, closeDuration)
+
+    if (returnFocus) {
+      menuButtonRef.current?.focus()
+    }
+  }, [isMenuRendered])
 
   // gtag's own automatic page_view already covers the initial load; only
   // report subsequent SPA route changes here, mirroring the official
@@ -27,15 +71,42 @@ export default function Layout() {
     trackPageView(location.pathname)
   }, [location.pathname])
 
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeMenu(true)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMenuOpen, closeMenu])
+
+  useEffect(
+    () => () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current)
+      }
+      if (openFrameRef.current) {
+        cancelAnimationFrame(openFrameRef.current)
+      }
+    },
+    [],
+  )
+
   return (
     <>
       <header className="site-header">
         <div className="container site-header__inner">
-          <NavLink to="/" className="site-header__brand" end>
+          <NavLink to="/" className="site-header__brand" end onClick={() => closeMenu()}>
             <span className="site-header__mark" aria-hidden="true" />
             Fornax
           </NavLink>
-          <nav className="site-header__nav" aria-label="Primary">
+          <nav className="site-header__nav site-header__nav--desktop" aria-label="Primary">
             {NAV_LINKS.map((link) => (
               <NavLink
                 key={link.to}
@@ -50,7 +121,7 @@ export default function Layout() {
               </NavLink>
             ))}
           </nav>
-          <div className="site-header__ctas">
+          <div className="site-header__ctas site-header__ctas--desktop">
             <a
               className="btn btn--secondary"
               href={DOCS_URL}
@@ -82,7 +153,80 @@ export default function Layout() {
               </button>
             )}
           </div>
+          <button
+            ref={menuButtonRef}
+            type="button"
+            className="site-header__menu-button"
+            aria-expanded={isMenuOpen}
+            aria-controls="primary-navigation-menu"
+            onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
+          >
+            Menu
+          </button>
         </div>
+        {isMenuRendered && (
+          <div
+            id="primary-navigation-menu"
+            className={`site-header__disclosure${isMenuVisible ? ' is-open' : ' is-closing'}`}
+            aria-hidden={!isMenuOpen}
+            inert={!isMenuOpen}
+          >
+            <nav className="site-header__nav site-header__nav--mobile" aria-label="Primary">
+              {NAV_LINKS.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  end={link.end}
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'site-header__link site-header__menu-link is-active'
+                      : 'site-header__link site-header__menu-link'
+                  }
+                  onClick={() => {
+                    if (link.event) {
+                      trackEvent(link.event)
+                    }
+                    closeMenu()
+                  }}
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+              <a
+                className="site-header__menu-link"
+                href={DOCS_URL}
+                onClick={() => {
+                  trackEvent('docs_click')
+                  closeMenu()
+                }}
+              >
+                Docs
+              </a>
+              {APP_LIVE ? (
+                <a
+                  className="site-header__menu-link"
+                  href={APP_URL}
+                  onClick={() => {
+                    trackEvent('app_click')
+                    closeMenu()
+                  }}
+                >
+                  Sign in
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  className="site-header__menu-link"
+                  aria-disabled="true"
+                  disabled
+                  title="Sign-in is not available yet"
+                >
+                  Sign in
+                </button>
+              )}
+            </nav>
+          </div>
+        )}
       </header>
 
       <main className="site-main">
