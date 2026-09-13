@@ -55,6 +55,7 @@ test('dismisses the disclosure when a marketing route is chosen', async ({ page 
 })
 
 test('keeps a rapidly reopened disclosure visible', async ({ page }) => {
+  await page.clock.install()
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
 
@@ -63,9 +64,10 @@ test('keeps a rapidly reopened disclosure visible', async ({ page }) => {
   await menuButton.click()
   await menuButton.click()
 
-  await page.waitForTimeout(180)
+  await page.clock.runFor(121)
+  const disclosure = page.locator('#primary-navigation-menu')
   await expect(menuButton).toHaveAttribute('aria-expanded', 'true')
-  await expect(page.locator('#primary-navigation-menu')).toBeVisible()
+  await expect(disclosure).toBeVisible()
 })
 
 test('dismisses the disclosure on browser history navigation', async ({ page }) => {
