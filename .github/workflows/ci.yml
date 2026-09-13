@@ -1,7 +1,8 @@
 name: ci
 
 on:
-  push: {}
+  push:
+    branches: [main, uiux/visual-experience-overhaul]
   pull_request:
 
 concurrency:
@@ -21,6 +22,8 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build
+      - run: npm run test:e2e
