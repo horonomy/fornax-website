@@ -14,7 +14,7 @@ export default function Pricing() {
       <span className="pill pill--placeholder">Provisional — not final</span>
       <h1>Pricing</h1>
       <p className="page__lede">
-        Fornax v0.0.1 is a local-first OSS runtime with an opt-in Beta cloud
+        Fornax is a local-first OSS runtime with an opt-in Beta cloud
         tier. Nothing below is a committed price — the Beta tier&apos;s
         price is a hypothesis we&apos;re testing, not an offer, and requires
         owner commercial approval before it becomes real. Talk to us if you
@@ -46,8 +46,8 @@ export default function Pricing() {
           <h2>Beta / Early Access</h2>
           <p className="pricing-card__price">TBD</p>
           <p>
-            Opt-in cloud sync and a hosted findings dashboard are available
-            today as an unbilled Beta preview — not a committed product tier.
+            Opt-in cloud sync and a hosted findings dashboard are built and
+            working, but not yet self-serve — not a committed product tier.
             Price, seat model, and final scope are still unset; nothing here
             is an offer until it gets owner commercial approval.
           </p>
@@ -55,7 +55,7 @@ export default function Pricing() {
             <li>Everything in Free</li>
             <li>Opt-in cloud sync of redacted findings (Beta, unbilled today)</li>
             <li>Hosted findings dashboard</li>
-            <li>Device connect flow: coming soon (FORNX-151)</li>
+            <li>Public self-service device connect: coming soon, pending the Beta trust-model cutover (FORNX-137)</li>
             <li>Shape it: early access conversations open now</li>
           </ul>
           <a
@@ -85,7 +85,7 @@ export default function Pricing() {
       </div>
 
       <p className="pricing-disclaimer">
-        Fornax is at MVP maturity (v0.0.1). None of the tiers above represent
+        Fornax is at MVP/Beta maturity. None of the tiers above represent
         a signed contract or a guaranteed feature set — see{' '}
         <Link to="/open-source">Open Source</Link> and{' '}
         <Link to="/security">Security &amp; Privacy</Link> for what actually
