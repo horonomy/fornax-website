@@ -2,12 +2,26 @@ name = "fornax-edge"
 main = "src/index.ts"
 compatibility_date = "2026-09-06"
 
-# Zone-level Workers Route takes precedence over the Pages custom-domain
-# binding already on this hostname (see src/index.ts for why a Worker route
-# was chosen over a Redirect Rule/Bulk Redirect/Page Rule). The Pages custom
-# domain is deliberately left attached rather than detached: the route
-# intercepts matching requests before Pages resolution runs, so there is no
-# need to touch — and no risk to — the existing TLS binding on this hostname.
-[[routes]]
-pattern = "fornax.horo.run/*"
-zone_name = "horo.run"
+# FORNX-241 (founder-approved architecture decision, 2026-09-19): the
+# fornax.horo.run/* route this Worker used to own is released here and
+# re-claimed by fornax-cloud/frontend's own Worker, which now serves the
+# real Fornax Beta SaaS frontend at that hostname instead of redirecting it
+# to fornax.horonom.com. See that repo's frontend/wrangler.jsonc for the
+# new owner, and its own comment for why this doesn't need a Custom Domain
+# (the Pages custom-domain binding this repo's Worker used to intercept
+# ahead of stays attached and untouched).
+#
+# This Worker (src/index.ts, HORO-572's fornax.horo.run -> fornax.horonom.com
+# redirect) is deliberately left deployed but routeless rather than deleted:
+# it has no route left to serve, and deleting a live Worker in shared
+# Cloudflare infra is a separate, more irreversible action than releasing a
+# route. Re-attach a route here only if fornax.horo.run's SaaS deployment is
+# ever retired and the redirect needs to come back.
+#
+# An explicit empty array (not just omitting the key) is required to make
+# wrangler actually unassign the previously-deployed route via the API —
+# omitting `routes` entirely left the old assignment in place on the first
+# attempt at this change (verified live: redeploying with no `routes` key
+# did not release "fornax.horo.run/*", confirmed by the next Worker's
+# deploy failing with "already assigned to routes").
+routes = []
