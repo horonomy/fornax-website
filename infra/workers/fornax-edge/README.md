@@ -1,8 +1,19 @@
 # fornax-edge
 
-A single-purpose Cloudflare Worker (HORO-572): hard-redirect the legacy
-`fornax.horo.run` hostname to the canonical `fornax.horonom.com`, preserving
-path and query string, with a `301` and no proxying.
+**Superseded (FORNX-241, 2026-09-19):** `fornax.horo.run` now serves the
+real Fornax Beta SaaS frontend, deployed by `fornax-cloud/frontend`'s own
+Worker — see that repo's `frontend/wrangler.jsonc`. This Worker's route on
+that hostname was released in the same change so the new Worker could claim
+it; this script stays deployed but routeless (see "Deploy" below), not
+deleted, in case the redirect ever needs to come back.
+
+Originally: a single-purpose Cloudflare Worker (HORO-572) to hard-redirect
+the legacy `fornax.horo.run` hostname to the canonical `fornax.horonom.com`,
+preserving path and query string, with a `301` and no proxying. The
+historical rationale below still explains why a Worker (not a Redirect
+Rule) was used, and why this stayed a bare redirect rather than adopting
+`horologium-edge`'s proxy shape — both are now moot for this hostname but
+kept for the record.
 
 ## Why this exists
 
