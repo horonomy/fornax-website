@@ -55,7 +55,7 @@ export default function Pricing() {
             <li>Everything in Free</li>
             <li>Opt-in cloud sync of redacted findings (Beta, unbilled today)</li>
             <li>Hosted findings dashboard</li>
-            <li>Public self-service device connect: coming soon, pending the Beta trust-model cutover (FORNX-137)</li>
+            <li>Public self-service device connect: live (FORNX-137)</li>
             <li>Shape it: early access conversations open now</li>
           </ul>
           <a

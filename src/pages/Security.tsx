@@ -43,11 +43,10 @@ export default function Security() {
         </p>
         <p>
           Connecting a machine to Beta requires device registration and
-          authenticated ingest — that API is built and working, but public
-          self-service registration isn&apos;t exposed yet: it stays
-          access-controlled until the Beta trust-model cutover (tracked as
-          FORNX-137) is finalized. Marked <strong>Beta — coming soon</strong>
-          in the docs until then; it is not live today.
+          authenticated ingest — public self-service registration is live
+          today (FORNX-137's Beta trust-model cutover, 2026-09-19): register
+          a device, receive a scoped credential, and it authenticates every
+          ingest request from then on.
         </p>
       </section>
 
