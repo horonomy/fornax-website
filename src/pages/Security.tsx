@@ -43,9 +43,10 @@ export default function Security() {
         </p>
         <p>
           Connecting a machine to Beta requires device registration and
-          authenticated ingest — that flow is still being built (tracked as
-          FORNX-151) and is marked <strong>Beta — coming soon</strong> in the
-          docs until it ships; it is not live today.
+          authenticated ingest — public self-service registration is live
+          today (FORNX-137's Beta trust-model cutover, 2026-09-19): register
+          a device, receive a scoped credential, and it authenticates every
+          ingest request from then on.
         </p>
       </section>
 
@@ -75,7 +76,7 @@ export default function Security() {
           point evidence is captured and stored locally; the further path
           once an upload leaves that boundary (upload transport through to
           the hosted dashboard) has not had the same level of independent,
-          end-to-end re-verification. Fornax is at MVP maturity (v0.0.1)
+          end-to-end re-verification. Fornax is at MVP/Beta maturity
           with an opt-in Beta cloud tier, not a GA product; this page will
           be updated as the privacy boundary is extended and independently
           reviewed.

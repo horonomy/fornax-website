@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { DOCS_URL, GITHUB_URL, APP_URL, APP_LIVE, DOCS_LIVE } from '../config'
+import { DOCS_URL, GITHUB_URL, APP_URL, APP_LIVE } from '../config'
 import { trackPageView, trackEvent, type FunnelEvent } from '../analytics'
 import './Layout.css'
 
@@ -54,19 +54,33 @@ export default function Layout() {
             <a
               className="btn btn--secondary"
               href={DOCS_URL}
-              aria-disabled={!DOCS_LIVE}
               onClick={() => trackEvent('docs_click')}
             >
               Docs
             </a>
-            <a
-              className="btn btn--primary"
-              href={APP_URL}
-              aria-disabled={!APP_LIVE}
-              onClick={() => trackEvent('app_click')}
-            >
-              Sign in
-            </a>
+            {APP_LIVE ? (
+              <a
+                className="btn btn--primary"
+                href={APP_URL}
+                onClick={() => trackEvent('app_click')}
+              >
+                Sign in
+              </a>
+            ) : (
+              // Genuinely not live yet (FORNX-42) — a real disabled <button>
+              // (no href, browser-enforced non-interactivity, removed from
+              // tab order) rather than a dimmed-but-live <a>, which looked
+              // disabled while still navigating on click/Enter (FORNX-336).
+              <button
+                type="button"
+                className="btn btn--primary"
+                aria-disabled="true"
+                disabled
+                title="Sign-in is not available yet"
+              >
+                Sign in
+              </button>
+            )}
           </div>
         </div>
       </header>
