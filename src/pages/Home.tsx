@@ -9,13 +9,14 @@ export default function Home() {
     <>
       <section className="container hero">
         <span className="pill">Early / v0.0.1</span>
-        <h1>What should you believe about what your coding agent just told you?</h1>
+        <h1>What should you believe about what your AI agent just told you?</h1>
         <p className="hero__lede">
-          Fornax watches a coding agent session in real time, captures
-          immutable evidence — tool calls, exit codes, transcripts — and
-          checks the agent&apos;s own claims against that evidence. No made-up
-          trust score. Just{' '}
-          <VerdictPill state="VERIFIED" /> or one of four honest alternatives.
+          Fornax watches an agent session in real time, captures immutable
+          evidence — tool calls, exit codes, transcripts — and checks the
+          agent&apos;s own claims against that evidence. No made-up trust
+          score. Just <VerdictPill state="VERIFIED" /> or one of four honest
+          alternatives. Available today for coding agents (Claude Code,
+          Codex, opencode).
         </p>
         <div className="hero__ctas">
           <a
