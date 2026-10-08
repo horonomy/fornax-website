@@ -1,0 +1,63 @@
+# Semantic positioning guard (HORO-1740): catches the hero H1/lede and
+# the SEO meta description narrowing identity back to "for coding
+# agents" (the HORO-1735 regression). Standalone, additive — does not
+# touch ci.yml or codeql.yml.
+name: Positioning guard
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - src/pages/Home.tsx
+      - index.html
+      - .github/workflows/positioning-guard.yml
+  push:
+    branches: [main]
+    paths:
+      - src/pages/Home.tsx
+      - index.html
+      - .github/workflows/positioning-guard.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: positioning-guard-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout fornax-website
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: product
+
+      - name: Checkout horonomy/.github (positioning registry)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: horonomy/.github
+          ref: e03d9bd8c421514efef5167feb2e77698624f7bf
+          sparse-checkout: |
+            scripts
+            metadata/positioning
+          sparse-checkout-cone-mode: false
+          path: guard
+
+      - name: Check hero H1 + lede
+        run: |
+          python3 guard/scripts/check_positioning.py text \
+            --product fornax --surface identity \
+            --record guard/metadata/positioning/fornax.yaml \
+            --file product/src/pages/Home.tsx \
+            --from '<h1>' --to '</p>'
+
+      - name: Check SEO meta description
+        run: |
+          python3 guard/scripts/check_positioning.py text \
+            --product fornax --surface identity \
+            --record guard/metadata/positioning/fornax.yaml \
+            --file product/index.html \
+            --from 'name="description"' --to '/>'
