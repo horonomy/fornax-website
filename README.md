@@ -1,7 +1,8 @@
 # fornax-website
 
 The public marketing/product site for [Fornax](https://github.com/horonomy/fornax-core)
-— an evidence-first agent-integrity system for coding agents. This is **not**
+— evidence-first execution-truth infrastructure for AI agents, currently
+supporting coding agents (Claude Code, Codex, opencode). This is **not**
 the technical documentation site (that's `fornax-docs`); it's the landing
 surface that explains the product, presents (placeholder) pricing, calls out
 the OSS boundary, and links out to docs, GitHub, and the SaaS app.

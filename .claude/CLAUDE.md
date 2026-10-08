@@ -6,8 +6,9 @@ where they conflict.
 ## Repository identity
 
 - Repo: `horonomy/fornax-website`. Public. The public marketing/product site
-  for [Fornax](https://github.com/horonomy/fornax-core) — an evidence-first
-  agent-integrity system for coding agents. Not the technical documentation
+  for [Fornax](https://github.com/horonomy/fornax-core) — evidence-first
+  execution-truth infrastructure for AI agents, currently supporting coding
+  agents (Claude Code, Codex, opencode). Not the technical documentation
   site (that's `fornax-docs`) — this is the landing surface that explains
   the product, presents (placeholder) pricing, calls out the OSS boundary,
   and links out to docs, GitHub, and the SaaS app.
