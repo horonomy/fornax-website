@@ -1,0 +1,17 @@
+# Cloudflare Pages response-header baseline (HORO-1700). Copied verbatim
+# into dist/ by Vite's static-asset handling (anything under public/ is
+# copied to the build root unchanged), so it sits next to index.html.
+#
+# CSP is Report-Only for now: this site only loads the GA4 gtag.js
+# bootstrap (src/analytics.ts) plus whatever Cloudflare's own RUM beacon
+# injects at the edge. Report-Only lets real violations surface in the
+# browser console without blocking any request while that allowlist is
+# verified against production traffic — matching the same safe rollout
+# pattern already used in ai-agent-assembly/docs (see HORO-1700 history).
+
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' www.googletagmanager.com static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' www.google-analytics.com www.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
