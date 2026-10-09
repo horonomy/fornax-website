@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <section className="container hero">
-        <span className="pill">Early / v0.0.1</span>
+        <span className="pill">Early / v0.0.7</span>
         <h1>What should you believe about what your AI agent just told you?</h1>
         <p className="hero__lede">
           Fornax watches an agent session in real time, captures immutable

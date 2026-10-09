@@ -9,6 +9,11 @@
       content="Fornax checks what an AI agent tells you against the evidence of what it actually did — VERIFIED, UNVERIFIED, CONTRADICTED, REVIEW, or UNAVAILABLE. No made-up trust score. Currently supports coding agents (Claude Code, Codex, opencode)."
     />
     <link rel="canonical" href="https://fornax.horonom.com/" />
+    <!-- HORO-1810: this is a client-rendered SPA, so the React-mounted Docs
+         nav link never appears in the HTML a crawler without JS actually
+         fetches. `rel="help"` is a static, always-present signal independent
+         of hydration; the noscript link below covers a no-JS visitor too. -->
+    <link rel="help" href="https://docs.fornax.horonom.com" />
     <meta property="og:url" content="https://fornax.horonom.com/" />
     <meta property="og:title" content="Fornax — evidence-first agent integrity" />
     <meta
@@ -18,6 +23,13 @@
     <title>Fornax — evidence-first agent integrity</title>
   </head>
   <body>
+    <noscript>
+      <p>
+        Fornax — evidence-first agent integrity.
+        <a href="https://docs.fornax.horonom.com">Read the docs</a> or
+        <a href="https://github.com/horonomy/fornax-core">view the source on GitHub</a>.
+      </p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
