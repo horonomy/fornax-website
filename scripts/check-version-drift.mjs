@@ -72,6 +72,12 @@ export function evaluateLive({ advertised, deployed }) {
     : [`deployed site shows ${deployed} but source advertises ${advertised}: production lags main`]
 }
 
+// Error text can embed remote-controlled data (a URL, an HTTP status line);
+// strip control characters so it cannot forge extra log lines (Sonar S5145).
+export function oneLine(text) {
+  return String(text).replace(/[\u0000-\u001f\u007f]+/g, ' ').slice(0, 300)
+}
+
 async function getJson(url) {
   const headers = { accept: 'application/vnd.github+json', 'user-agent': 'fornax-website-version-drift' }
   if (process.env.GITHUB_TOKEN) headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`
@@ -110,10 +116,10 @@ async function main(argv) {
     }
   } catch (err) {
     if (strict) {
-      console.error(`version drift check could not run: ${err.message}`)
+      console.error(`version drift check could not run: ${oneLine(err.message)}`)
       return 1
     }
-    console.warn(`version drift check skipped (network): ${err.message}`)
+    console.warn(`version drift check skipped (network): ${oneLine(err.message)}`)
     return 0
   }
   if (findings.length) {

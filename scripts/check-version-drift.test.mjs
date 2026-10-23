@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { compareSemver, evaluateLive, evaluateSource, extractPill, extractReleaseMeta, readAdvertisedRelease } from './check-version-drift.mjs'
+import { compareSemver, evaluateLive, evaluateSource, extractPill, extractReleaseMeta, oneLine, readAdvertisedRelease } from './check-version-drift.mjs'
 
 test('semver compare orders numerically, not lexically', () => {
   assert.equal(compareSemver('v0.0.9', 'v0.0.10'), -1)
@@ -49,4 +49,9 @@ test('the release meta is read in either attribute order, and absent on a pre-st
   assert.equal(extractReleaseMeta('<head><meta name="fornax-release" content="v0.0.7"></head>'), 'v0.0.7')
   assert.equal(extractReleaseMeta('<meta content="v0.0.7" name="fornax-release">'), 'v0.0.7')
   assert.equal(extractReleaseMeta('<head><meta name="viewport" content="v0.0.7"></head>'), null)
+})
+
+test('error text cannot forge extra log lines', () => {
+  assert.equal(oneLine('boom\n::error::forged\r\nline'), 'boom ::error::forged line')
+  assert.equal(oneLine('x'.repeat(500)).length, 300)
 })
