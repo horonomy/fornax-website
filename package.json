@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --noEmit",
     "lint": "oxlint",
+    "test:version": "node --test scripts/*.test.mjs",
+    "check:version": "node scripts/check-version-drift.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

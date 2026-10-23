@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { DOCS_URL, GITHUB_URL, DOCS_LIVE } from '../config'
+import { DOCS_URL, GITHUB_URL, DOCS_LIVE, LATEST_RELEASE } from '../config'
 import VerdictPill from '../components/VerdictPill'
 import { trackEvent } from '../analytics'
 import './Home.css'
@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <section className="container hero">
-        <span className="pill">Early / v0.0.7</span>
+        <span className="pill">Early / {LATEST_RELEASE}</span>
         <h1>What should you believe about what your AI agent just told you?</h1>
         <p className="hero__lede">
           Fornax watches an agent session in real time, captures immutable
