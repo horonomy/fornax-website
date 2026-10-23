@@ -75,7 +75,11 @@ export function evaluateLive({ advertised, deployed }) {
 // Error text can embed remote-controlled data (a URL, an HTTP status line);
 // strip control characters so it cannot forge extra log lines (Sonar S5145).
 export function oneLine(text) {
-  return String(text).replace(/[\u0000-\u001f\u007f]+/g, ' ').slice(0, 300)
+  const flat = Array.from(String(text), (ch) => {
+    const code = ch.codePointAt(0)
+    return code < 32 || code === 127 ? ' ' : ch
+  }).join('')
+  return flat.replace(/ {2,}/g, ' ').slice(0, 300)
 }
 
 async function getJson(url) {
