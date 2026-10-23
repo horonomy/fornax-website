@@ -127,10 +127,10 @@ async function main(argv) {
     return 0
   }
   if (findings.length) {
-    for (const f of findings) console.error(`VERSION DRIFT: ${f}`)
+    for (const f of findings) console.error(`VERSION DRIFT: ${oneLine(f)}`)
     return 1
   }
-  console.log(`version drift check passed (${notes.join('; ')})`)
+  console.log(`version drift check passed (${oneLine(notes.join('; '))})`)
   return 0
 }
 
