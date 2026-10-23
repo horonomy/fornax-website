@@ -33,3 +33,17 @@ export const APP_URL = 'https://fornax.horo.run'
  */
 export const DOCS_LIVE = true
 export const APP_LIVE = true
+
+/**
+ * The Fornax release this site advertises in the hero badge ("Early / vX").
+ *
+ * Single source for every version string the site shows. It must equal the
+ * latest *published* GitHub release of horonomy/fornax-core (the "Latest"
+ * release, which excludes pre-releases) and must never name an unreleased
+ * candidate. Bump it in the same change that publishes a release; the drift
+ * gate (`npm run check:version`, scripts/check-version-drift.mjs) fails when
+ * it disagrees with GitHub, and a daily job (`--live`) fails when the deployed
+ * site disagrees with it.
+ */
+export const LATEST_RELEASE = 'v0.0.7'
+

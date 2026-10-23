@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin } from 'vite'
+import { LATEST_RELEASE } from './src/config.js'
 
 /**
  * Injects the GA4 gtag.js snippet as static, parser-inserted <script> tags
@@ -33,7 +34,27 @@ function gtagHtmlPlugin(): Plugin {
   }
 }
 
+/**
+ * Stamps the advertised release into the static HTML (FORNX-461) so the
+ * deployed version is readable without executing the SPA: the scheduled
+ * drift check compares this against src/config.ts and GitHub releases.
+ */
+function releaseMetaPlugin(): Plugin {
+  return {
+    name: 'inject-release-meta',
+    transformIndexHtml() {
+      return [
+        {
+          tag: 'meta',
+          attrs: { name: 'fornax-release', content: LATEST_RELEASE },
+          injectTo: 'head' as const,
+        },
+      ]
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), gtagHtmlPlugin()],
+  plugins: [react(), gtagHtmlPlugin(), releaseMetaPlugin()],
 })

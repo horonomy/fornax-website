@@ -32,12 +32,14 @@ npm run preview      # preview the production build locally
 
 ## Content status
 
-Fornax is at MVP maturity (v0.0.1). Pricing figures on `/pricing` are clearly
-labeled provisional placeholders, not committed prices — real commercial
-pricing requires owner approval. The docs (`/docs` link) and SaaS app
-(sign-in) links point at surfaces that are being built in parallel and are
-not live yet; see `src/config.ts` for the single place those URLs are
-configured.
+Fornax is pre-1.0 and early. The release shown in the hero badge is
+`LATEST_RELEASE` in `src/config.ts`: it must equal the latest published
+release of `horonomy/fornax-core` and must never name an unreleased candidate
+(`npm run check:version` verifies this; a daily job also checks the deployed
+site). Pricing figures on `/pricing` are clearly labeled provisional
+placeholders, not committed prices; real commercial pricing requires owner
+approval. The docs and SaaS app links are configured in `src/config.ts`
+(`DOCS_LIVE` / `APP_LIVE` gate them).
 
 ## Repository conventions
 
