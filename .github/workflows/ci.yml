@@ -25,3 +25,11 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build
+      - run: npm run test:version
+      # Source vs the latest published fornax-core release (FORNX-461). A
+      # GitHub API outage skips this step with a warning instead of failing
+      # unrelated PRs; the scheduled job runs it strictly.
+      - run: npm run check:version
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
