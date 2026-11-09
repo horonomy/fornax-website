@@ -113,6 +113,9 @@ export default function Layout() {
             <NavLink to="/security" onClick={() => trackEvent('security_details_click')}>
               Security &amp; Privacy
             </NavLink>
+            <a href="https://ko-fi.com/chisanan232" target="_blank" rel="noreferrer">
+              Support open source (individual maintainer, Ko-fi)
+            </a>
           </div>
         </div>
       </footer>
